@@ -250,29 +250,18 @@ tacchaind tendermint show-validator
 ```
 # Create validator transaction file
 ```
-cat > validatortx.json << 'EOF'
-{
-    "pubkey": {
-        "@type": "/cosmos.crypto.ed25519.PubKey",
-        "key": "VALIDATOR_PUBKEY_HERE"
-    },
-    "amount": "1000000000000000000utac",
-    "moniker": "YOUR_MONIKER",
-    "identity": "YOUR_IDENTITY",
-    "website": "YOUR_WEBSITE",
-    "security": "YOUR_EMAIL",
-    "details": "YOUR_DESCRIPTION",
-    "commission-rate": "0.1",
-    "commission-max-rate": "0.2",
-    "commission-max-change-rate": "0.01",
-    "min-self-delegation": "1"
-}
-EOF
-```
-# Add pubkey to file
-```
-PUBKEY=$(tacchaind tendermint show-validator | jq -r .key)
-sed -i "s/VALIDATOR_PUBKEY_HERE/$PUBKEY/g" validatortx.json
+echo "{\"pubkey\":{\"@type\":\"/cosmos.crypto.ed25519.PubKey\",\"key\":\"$(tacchaind tendermint show-validator | grep -Po '\"key\":\s*\"\K[^"]*')\"},
+    \"amount\": \"miktar000000000000000000utac\",
+    \"moniker\": \"test\",
+    \"identity\": \"\",
+    \"website\": \"\",
+    \"security\": \"\",
+    \"details\": \"CR\",
+    \"commission-rate\": \"0.1\",
+    \"commission-max-rate\": \"0.2\",
+    \"commission-max-change-rate\": \"0.01\",
+    \"min-self-delegation\": \"1\"
+}" > validatortx.json
 ```
 # Create validator
 ```
