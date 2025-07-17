@@ -241,12 +241,15 @@ tacchaind query bank balances $(tacchaind keys show wallet_name -a) --node http:
 ## Validator Setup
 
 > **Important:** Send TAC tokens to your wallet first! Minimum: 1 TAC + gas fees (~0.15 TAC)
+```
+cd
+```
 
-```bash
-# Get validator pubkey
+```
 tacchaind tendermint show-validator
-
+```
 # Create validator transaction file
+```
 cat > validatortx.json << 'EOF'
 {
     "pubkey": {
@@ -265,18 +268,20 @@ cat > validatortx.json << 'EOF'
     "min-self-delegation": "1"
 }
 EOF
-
+```
 # Add pubkey to file
+```
 PUBKEY=$(tacchaind tendermint show-validator | jq -r .key)
 sed -i "s/VALIDATOR_PUBKEY_HERE/$PUBKEY/g" validatortx.json
-
+```
 # Create validator
+```
 tacchaind tx staking create-validator validatortx.json \
-    --from wallet_name \
+    --from <cuzdan> \
     --chain-id tacchain_239-1 \
     --node http://localhost:59657 \
     --gas auto --gas-adjustment 1.4 \
-    --gas-prices 400000000000000utac -y
+    --fees 130000000000000000utac -y
 ```
 
 ## Validator Check
